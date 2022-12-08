@@ -6,7 +6,7 @@ on:
     branches: [ main]
     paths:
     
-     - '.github/workflows/azure-webapps-node.yml'
+     - '.github/workflows/main.yml'
     # - 'src/biceps/*'
 permissions:
       id-token: write
@@ -22,7 +22,7 @@ jobs:
       type: "internal"
       Appplicationtype: "portal"
       envtype: "dev"
-      appID: "test-pairing"
+      appID: "a"
       sku: "B1"
       linuxFxVersion : "node|14-lts"
       
@@ -123,9 +123,7 @@ jobs:
         with:
           # Specify the script here
           inlineScript:
-             $vnet1Id=$(az network vnet show --resource-group rg-${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}} --name vnet-${{ env.companybbr }}-${{ env.envtype }}-spoke --query id --out tsv)
-             $vnet2Id=$(az network vnet show --resource-group rg-${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}} --name vnet-${{ env.companybbr }}-${{ env.envtype }}-hub --query id --out tsv)
-             az network vnet peering create --name ${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}}-Vnet-Peering --resource-group rg-${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}} --vnet-name vnet-${{ env.companybbr }}-${{ env.envtype }}-spoke --remote-vnet-id $vnet2Id --allow-vnet-access
+             az network vnet peering create --name ${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}}-Vnet-Peering --resource-group rg-${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}} --vnet-name vnet-${{ env.companybbr }}-${{ env.envtype }}-spoke --remote-vnet vnet-${{ env.companybbr }}-${{ env.envtype }}-hub --allow-vnet-access
 
 
       # Deploy  Application Gatway .................
