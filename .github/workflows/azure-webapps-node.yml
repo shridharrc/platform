@@ -22,7 +22,7 @@ jobs:
       type: "internal"
       Appplicationtype: "portal"
       envtype: "dev"
-      appID: "test"
+      appID: "test-pairing"
       sku: "B1"
       linuxFxVersion : "node|14-lts"
       
@@ -116,7 +116,18 @@ jobs:
           inlineScript:
              az webapp vnet-integration add -g rg-${{ env.companybbr }}-${{ env.envtype }}-website-${{env.appID}} -n wapp-${{ env.companybbr }}-${{ env.envtype }}-website-${{env.appID}} --vnet /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/rg-${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}}/providers/Microsoft.Network/virtualNetworks/vnet-${{ env.companybbr }}-${{ env.envtype }}-spoke --subnet /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/rg-${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}}/providers/Microsoft.Network/virtualNetworks/vnet-${{ env.companybbr }}-${{ env.envtype }}-spoke/subnets/appsrv-subnet
 
-        
+
+      # Add Vnet Peering
+      - name: Azure CLI Action to Vnet Peering
+        uses: Azure/cli@v1
+        with:
+          # Specify the script here
+          inlineScript:
+             $vnet1Id=$(az network vnet show --resource-group rg-${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}} --name vnet-${{ env.companybbr }}-${{ env.envtype }}-spoke --query id --out tsv)
+             $vnet2Id=$(az network vnet show --resource-group rg-${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}} --name vnet-${{ env.companybbr }}-${{ env.envtype }}-hub --query id --out tsv)
+             az network vnet peering create --name ${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}}-Vnet-Peering --resource-group rg-${{ env.companybbr }}-${{ env.envtype }}-security-${{env.appID}} --vnet-name vnet-${{ env.companybbr }}-${{ env.envtype }}-spoke --remote-vnet-id $vnet2Id --allow-vnet-access
+
+
       # Deploy  Application Gatway .................
       - name: Deploy Application Gatway in Hub vNet infrastructure 
         uses: azure/arm-deploy@v1
