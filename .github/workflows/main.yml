@@ -22,7 +22,7 @@ jobs:
       type: "internal"
       Appplicationtype: "portal"
       envtype: "dev"
-      appID: "a-test"
+      appID: "b"
       sku: "B1"
       linuxFxVersion : "node|14-lts"
       
