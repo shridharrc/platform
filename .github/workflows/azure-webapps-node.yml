@@ -23,7 +23,7 @@ jobs:
       Appplicationtype: "portal"
       envtype: "dev"
       appID: "shree"
-      sku: "F1"
+      sku: "B1"
       linuxFxVersion : "node|14-lts"
       
 
