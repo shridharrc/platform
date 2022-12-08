@@ -109,7 +109,7 @@ jobs:
      
           
       # Add Vnet Integration
-      - name: Azure CLI Action to Restrict Access
+      - name: Azure CLI Action to Vnet Integration
         uses: Azure/cli@v1
         with:
           # Specify the script here
